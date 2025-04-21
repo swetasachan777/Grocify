@@ -1,12 +1,12 @@
 import React from 'react';
 import { useAppcontext } from '../context/Appcontext';
 
-const Product_card = ({ product }) => {
+const ProductCard = ({ product }) => {
   const {
     currency,
     addToCart,
     updateCartItem,
-    RemoveProductCart,
+    removeProductCart,
     cartItems
   } = useAppcontext();
 
@@ -42,7 +42,7 @@ const Product_card = ({ product }) => {
               </button>
             ) : (
               <div className="flex items-center justify-center gap-2 md:w-20 w-16 h-[34px] bg-indigo-500/25 rounded select-none">
-                <button onClick={() => RemoveProductCart(product._id)} className="cursor-pointer text-md px-2 h-full">
+                <button onClick={() => removeProductCart(product._id)} className="cursor-pointer text-md px-2 h-full">
                   -
                 </button>
                 <span className="w-5 text-center">{count}</span>
@@ -58,4 +58,4 @@ const Product_card = ({ product }) => {
   );
 };
 
-export default Product_card;
+export default ProductCard;

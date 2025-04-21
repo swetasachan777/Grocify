@@ -14,6 +14,7 @@ export const AppcontextProvider = ({ children }) => {
   const [showUserLogin, setshowUserLogin] = useState(false);
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState({});
+  const [searchQuery, setSearchQuery] = useState({});
 
   const fetchProducts = async () => {
     setProducts(dummyProducts);
@@ -37,7 +38,7 @@ export const AppcontextProvider = ({ children }) => {
     toast.success("Cart updated");
   };
 
-  const RemoveProductCart = (itemID) => {
+  const removeProductCart = (itemID) => {
     const cartData = { ...cartItems };
     if (cartData[itemID]) {
       cartData[itemID] -= 1;
@@ -65,8 +66,10 @@ export const AppcontextProvider = ({ children }) => {
     currency,
     addToCart,
     updateCartItem,
-    RemoveProductCart,
+    removeProductCart,
     cartItems,
+    searchQuery,
+    setSearchQuery
   };
 
   return (

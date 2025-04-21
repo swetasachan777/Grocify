@@ -1,7 +1,7 @@
 import React from 'react';
-import { categories } from '../assets/assets.js'; // Adjust the import path to where your asset.js is located
-import { HiChevronRight } from 'react-icons/hi'; // Importing an arrow icon from react-icons
-import { useNavigate } from 'react-router-dom'; // Import the `useNavigate` hook for navigation
+import { categories } from '../assets/assets.js'; 
+import { HiChevronRight } from 'react-icons/hi'; 
+import { useNavigate } from 'react-router-dom'; 
 
 const Categories = () => {
   const navigate = useNavigate(); // Initialize the navigate function for routing

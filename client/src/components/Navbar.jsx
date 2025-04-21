@@ -1,16 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAppcontext } from '../context/Appcontext';
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-  const { user, setUser, setshowUserLogin, navigate } = useAppcontext();
-  const [showProfileMenu, setShowProfileMenu] = useState(false); // State to toggle the profile dropdown
+  const { user, setUser, setshowUserLogin, navigate, searchQuery, setSearchQuery } = useAppcontext();
+  const [showProfileMenu, setShowProfileMenu] = useState(false); 
 
   const logout = async () => {
     setUser(null);
     navigate('/');
   };
+
+  useEffect(() => {
+    if (searchQuery.length > 0) {
+      navigate("/products");
+    }
+  }, [searchQuery]);
+  
 
   const toggleProfileMenu = () => {
     setShowProfileMenu((prevState) => !prevState);
@@ -61,7 +68,7 @@ const Navbar = () => {
 
         {/* Search Bar */}
         <div className="hidden lg:flex items-center text-sm gap-2 border border-gray-300 px-3 rounded-full">
-          <input
+          <input onChange={(e)=> setSearchQuery(e.target.value)}
             className="py-1.5 w-full bg-transparent outline-none placeholder-gray-500"
             type="text"
             placeholder="Search products"

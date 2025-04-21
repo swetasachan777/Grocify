@@ -1,5 +1,5 @@
 import React from 'react';
-import Product_card from './Product_card';
+import ProductCard from './ProductCard';
 import { useAppcontext } from '../context/Appcontext';
 
 const Best_seller = () => {
@@ -12,7 +12,7 @@ const Best_seller = () => {
       {products
           .filter((product) => product.inStock)
           .map((product, index) => (
-            <Product_card key={index} product={product} />
+            <ProductCard key={index} product={product} />
           ))}
       </div>
     </div>
