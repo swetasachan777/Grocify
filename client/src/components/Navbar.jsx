@@ -4,7 +4,7 @@ import { useAppcontext } from '../context/Appcontext';
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-  const { user, setUser, setshowUserLogin, navigate, searchQuery, setSearchQuery } = useAppcontext();
+  const { user, setUser, setshowUserLogin, navigate, searchQuery, setSearchQuery,getCartCount } = useAppcontext();
   const [showProfileMenu, setShowProfileMenu] = useState(false); 
 
   const logout = async () => {
@@ -94,7 +94,7 @@ const Navbar = () => {
       <circle cx="14" cy="17" r="1" fill="#4fbf8b" />
     </svg>
     <span className="absolute -top-2 -right-3 bg-[#4fbf8b] text-white text-xs w-[18px] h-[18px] flex items-center justify-center rounded-full">
-      3
+      {getCartCount()}
     </span>
   </NavLink>
 </div>
