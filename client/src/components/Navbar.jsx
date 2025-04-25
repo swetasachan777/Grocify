@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAppcontext } from '../context/Appcontext';
+import { assets } from '../assets/assets';
+
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -27,15 +29,15 @@ const Navbar = () => {
     <nav className="flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 border-b border-gray-300 bg-white relative transition-all flex-wrap">
       {/* Logo */}
       <NavLink to="/" className="flex items-center gap-2">
-        <img
-          className="h-9"
-          src="https://img.icons8.com/color/96/000000/grocery-store.png"
-          alt="Grocery Store Logo"
-        />
-        <span className="text-[#4fbf8b] font-bold text-xl">
-          <span className="text-3xl">G</span>rocify
-        </span>
-      </NavLink>
+  <img
+    className="h-15"
+    src="https://img.icons8.com/color/96/000000/grocery-store.png"
+    alt="Grocery Store Icon"
+  />
+  <img src={assets.logo} alt="Grocify Logo" className="h-20 lg:h-20"/>
+
+</NavLink>
+
 
       {/* Toggle button for mobile */}
       <button
