@@ -17,20 +17,9 @@ const SellerLayout = () => {
 
   return (
     <>
-      <div>
-        {/* Top Navbar */}
-        <div className="flex items-center justify-between px-4 md:px-8 border-b border-gray-300 py-3 bg-white transition-all duration-300">
-          <Link to="/">
-            <img className="h-20 md:h-20 cursor-pointer" src={assets.logo} alt="logo" />
-          </Link>
-          <div className="flex items-center gap-5 text-gray-500">
-            <p>Hi! Admin</p>
-            <button onClick={logout} className="border rounded-full text-sm px-4 py-1">Logout</button>
-          </div>
-        </div>
-
+      <div className="flex h-screen">
         {/* Sidebar */}
-        <div className="md:w-64 w-16 border-r h-[550px] text-base border-gray-300 pt-4 flex flex-col transition-all duration-300">
+        <div className="md:w-64 w-16 border-r h-full text-base border-gray-300 pt-4 flex flex-col transition-all duration-300">
           {sidebarLinks.map((item) => (
             <NavLink
               to={item.path}
@@ -50,8 +39,24 @@ const SellerLayout = () => {
           ))}
         </div>
 
-        {/* Outlet for nested routes */}
-        <Outlet />
+        {/* Right side content */}
+        <div className="flex-1 flex flex-col h-full overflow-y-auto">
+          {/* Top Navbar */}
+          <div className="flex items-center justify-between px-4 md:px-8 border-b border-gray-300 py-3 bg-white transition-all duration-300">
+            <Link to="/">
+              <img className="h-20 md:h-20 cursor-pointer" src={assets.logo} alt="logo" />
+            </Link>
+            <div className="flex items-center gap-5 text-gray-500">
+              <p>Hi! Admin</p>
+              <button onClick={logout} className="border rounded-full text-sm px-4 py-1">Logout</button>
+            </div>
+          </div>
+
+          {/* Dynamic Page Content */}
+          <div className="p-4 md:p-8">
+            <Outlet />
+          </div>
+        </div>
       </div>
     </>
   );
