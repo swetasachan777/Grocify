@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import addressImage from '../assets/add_address_image.svg';
+import { useAppcontext } from '../context/Appcontext';
 
 const AddAddress = () => {
-  const navigate = useNavigate();
-
+  const navigate=useNavigate()
+  const {axios,user} = useAppcontext();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -22,15 +23,30 @@ const AddAddress = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const onSubmitHandler = async (e) => {
+   const onSubmitHandler = async (e) => {
     e.preventDefault();
+    try {
+      const { data } = await axios.post('/api/address/add', {
+        address: formData,
+        userId: "56356780912188177127",  
+      });
 
-    // Save to localStorage (or replace with context or Redux)
-    localStorage.setItem('shippingAddress', JSON.stringify(formData));
-
-    // Navigate to cart page
-    navigate('/cart');
+      if (data.success) {
+        toast.success(data.message);
+        navigate('/cart');
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
+
+  useEffect(() => {
+    if (!user) {
+      navigate('/cart');
+    }
+  }, [user, navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white px-6 py-16">

@@ -53,17 +53,21 @@ const fetchSeller = async () => {
 
   
   const fetchUser = async () => {
-     try {
-    const { data } = await axios.get('/api/user/is-auth');
-    
+  try {
+    const { data } = await axios.get('/api/user/is-auth', { withCredentials: true });
+
     if (data.success) {
-      setUser(data.user)
-      setCartItems(data.user.cartItems)
-    } 
+      setUser(data.user);
+      setCartItems(data.user.cartItems);
+    } else {
+      setUser(null); // 🔁 explicitly set null if not authenticated
+    }
   } catch (error) {
-     toast.error(error.message)
+    setUser(null); // 🔁 very important
+    console.error("Auth check failed:", error.message);
   }
-  };
+};
+
 
   const addToCart = (itemID) => {
     const cartData = { ...cartItems };
@@ -119,6 +123,28 @@ const fetchSeller = async () => {
     fetchSeller()
     fetchProducts();
   }, []);
+
+  // Update Database Cart Items
+ useEffect(() => {
+    const updateCart = async () => {
+        try {
+            const { data } = await axios.post('/api/cart/update', {
+                userId: user._id,
+                cartItems
+            });
+            if (!data.success) {
+                toast.error(data.message);
+            }
+        } catch (error) {
+            toast.error(error.message);
+        }
+    };
+
+    if (user) {
+        updateCart();
+    }
+}, [cartItems, user]);
+
 
   const value = {
     user,

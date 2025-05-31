@@ -2,17 +2,30 @@ import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAppcontext } from '../context/Appcontext';
 import { assets } from '../assets/assets';
-
+import toast from "react-hot-toast";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
-  const { user, setUser, setshowUserLogin, navigate, searchQuery, setSearchQuery,getCartCount } = useAppcontext();
+  const { user, setUser, setshowUserLogin, navigate, searchQuery, setSearchQuery,getCartCount, axios } = useAppcontext();
   const [showProfileMenu, setShowProfileMenu] = useState(false); 
 
-  const logout = async () => {
-    setUser(null);
-    navigate('/');
-  };
+ const logout = async () => {
+  try {
+    const { data } = await axios.get('/api/user/logout', { withCredentials: true });
+    if (data.success) {
+      toast.success(data.message);
+      setUser(null);
+      localStorage.removeItem("user"); // also clear storage
+      navigate('/');
+    } else {
+      toast.error(data.message);
+    }
+  } catch (error) {
+    toast.error(error.message);
+  }
+};
+
+
 
   useEffect(() => {
     if (searchQuery.length > 0) {
