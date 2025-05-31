@@ -21,7 +21,7 @@ export const sellerLogin = (req, res) => {
 
       return res.json({ success: true, message: 'Logged In' });
     } else {
-      return res.status(401).json({ success: false, message: 'Invalid Credentials' });
+      return res.status(401).json({ success: false, message: 'Invalid password or email' });
     }
   } catch (error) {
     console.error('Seller login error:', error);
