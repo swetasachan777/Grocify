@@ -11,7 +11,7 @@ export const AppcontextProvider = ({ children }) => {
   const currency = import.meta.env.VITE_CURRENCY || "$";
   const navigate = useNavigate();
 
-  const [user, setUser] = useState(true);
+  const [user, setUser] = useState(null);
   const [isSeller, setIsSeller] = useState(false);
   const [showUserLogin, setshowUserLogin] = useState(false);
   const [products, setProducts] = useState([]);
@@ -165,7 +165,8 @@ const fetchSeller = async () => {
     getCartAmount,
     getCartCount,
     axios,
-    fetchProducts
+    fetchProducts,
+    setCartItems
   };
 
   return (

@@ -1,14 +1,16 @@
 import { useState, useEffect} from "react";
 import { useAppcontext } from "../context/Appcontext";
 import { assets, dummyAddress } from "../assets/assets";
+import toast from "react-hot-toast";
 
+import axios from "axios"
 
 const Cart = () => {
-    const {products,currency,cartItems, removeProductCart, getCartCount, updateCartItem, navigate, getCartAmount} = useAppcontext()
+    const {axios,user,products,currency,cartItems, removeProductCart, getCartCount, updateCartItem, navigate, getCartAmount,setCartItems} = useAppcontext()
     const [cartArray, setCartArray] = useState([])
-    const [addresses, setAddresses] = useState(false)
+    const [addresses, setAddresses] = useState([])
     const [showAddress, setShowAddress] = useState(false)
-    const [selectedAddress, setSelectedAddress] = useState(dummyAddress[0])
+    const [selectedAddress, setSelectedAddress] = useState(null)
     const [paymentOption, setPaymentOption] = useState("COD")
 
     const getCart = ()=>{
@@ -23,15 +25,73 @@ const Cart = () => {
         setCartArray(tempArray)
     }
 
-    const placeOrder= async ()=>{
 
+    const getUserAddress = async () => {
+  try {
+const { data } = await axios.get(`/api/address/get?userId=${user._id}`);
+
+    if (data.success) {
+      setAddresses(data.addresses);
+      if (data.addresses.length > 0) {
+        setSelectedAddress(data.addresses[0]);
+      }
+    } else {
+      toast.error(data.message);
     }
+  } catch (error) {
+    toast.error(error.message);
+  }
+};
+
+
+    const placeOrder = async () => {
+  try {
+    if (!selectedAddress) {
+      return toast.error("Please select an address");
+    }
+
+    // Place Order with COD
+    if (paymentOption === "COD") {
+      const { data } = await axios.post('/api/order/cod', {
+        userId: user._id,
+        items: cartArray.map(item => ({
+          product: item._id,
+          quantity: item.quantity
+        })),
+        address: selectedAddress._id,
+      });
+
+      if (data.success) {
+        toast.success(data.message);
+        setCartItems({}); 
+        navigate('/my-orders')
+      } else {
+        toast.error(data.message);
+      }
+    }
+  } catch (error) {
+    toast.error(error.message || "Something went wrong");
+  }
+};
+
 
     useEffect(()=>{
         if(products.length > 0 && cartItems){
           getCart()
         }
       }, [products, cartItems])
+
+      useEffect(()=>{
+        if(user){
+
+            console.log("User in Cart.jsx:", user);
+            getUserAddress()
+        }
+         else {
+    console.log("❌ No user object found");
+  }
+      },[user])
+       
 
 
     return products.length > 0 && cartArray.length > 0  ? (
@@ -108,7 +168,7 @@ const Cart = () => {
                         </button>
                         {showAddress && (
                             <div className="absolute top-12 py-1 bg-white border border-gray-300 text-sm w-full">
-                                {dummyAddress.map((address, index)=>(
+                                {addresses.map((address, index)=>(
                                     <p onClick={() => {setSelectedAddress(address);
                                     setShowAddress(false)}} className="text-gray-500 p-2 hover:bg-gray-100">
                                         {address.street}, {address.city}, {address.state}, {address.country}

@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import addressImage from '../assets/add_address_image.svg';
 import { useAppcontext } from '../context/Appcontext';
+import toast from 'react-hot-toast';
 
 const AddAddress = () => {
-  const navigate=useNavigate()
-  const {axios,user} = useAppcontext();
+  
+  const {axios,user,navigate} = useAppcontext();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -13,7 +14,7 @@ const AddAddress = () => {
     street: '',
     city: '',
     state: '',
-    zip: '',
+    zipcode: '',
     country: '',
     phone: '',
   });
@@ -24,27 +25,26 @@ const AddAddress = () => {
   };
 
    const onSubmitHandler = async (e) => {
-    e.preventDefault();
-    try {
-      const { data } = await axios.post('/api/address/add', {
-        address: formData,
-        userId: "56356780912188177127",  
-      });
+  e.preventDefault();
+  try {
+    const { data } = await axios.post('/api/address/add', {
+      address: formData, // ✅ only send address — no userId
+    });
 
-      if (data.success) {
-        toast.success(data.message);
-        navigate('/cart');
-      } else {
-        toast.error(data.message);
-      }
-    } catch (error) {
-      toast.error(error.message);
+    if (data.success) {
+      toast.success(data.message);
+      navigate('/cart');
+    } else {
+      toast.error(data.message);
     }
-  };
+  } catch (error) {
+    toast.error(error.message);
+  }
+};
 
   useEffect(() => {
     if (!user) {
-      navigate('/cart');
+      navigate('/');
     }
   }, [user, navigate]);
 
@@ -128,7 +128,7 @@ const AddAddress = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <input
-                name="zip"
+                name="zipcode"
                 type="text"
                 placeholder="Zip code"
                 className="input-lg"
