@@ -43,11 +43,11 @@ const Navbar = () => {
       {/* Logo */}
       <NavLink to="/" className="flex items-center gap-2">
   <img
-    className="h-15"
+    className="h-14"
     src="https://img.icons8.com/color/96/000000/grocery-store.png"
     alt="Grocery Store Icon"
   />
-  <img src={assets.logo} alt="Grocify Logo" className="h-20 lg:h-20"/>
+  <img src={assets.logo} alt="Grocify Logo" className="h-25 lg:h-25"/>
 
 </NavLink>
 
