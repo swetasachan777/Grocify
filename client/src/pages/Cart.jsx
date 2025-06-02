@@ -95,16 +95,12 @@ const { data } = await axios.get(`/api/address/get?userId=${user._id}`);
         }
       }, [products, cartItems])
 
-      useEffect(()=>{
-        if(user){
-
-            console.log("User in Cart.jsx:", user);
-            getUserAddress()
-        }
-         else {
-    console.log("❌ No user object found");
+     useEffect(() => {
+  if (user && user._id) {
+    getUserAddress();
   }
-      },[user])
+}, [user?._id]);
+
        
 
 

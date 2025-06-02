@@ -47,7 +47,11 @@ const Navbar = () => {
     src="https://img.icons8.com/color/96/000000/grocery-store.png"
     alt="Grocery Store Icon"
   />
-  <img src={assets.logo} alt="Grocify Logo" className="h-25 lg:h-25"/>
+    <img 
+    src={assets.logo} 
+    alt="Grocify Logo" 
+    className="h-36 w-48 object-contain lg:h-40 lg:w-56"  // taller + wider, 144x192px default, larger on lg
+  />
 
 </NavLink>
 

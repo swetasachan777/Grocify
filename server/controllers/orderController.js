@@ -32,18 +32,21 @@ export const placeOrderCOD = async (req, res)=>{
     }
 }
 
+// ✅ This version fetches ALL orders for the user, no filter on paymentType or isPaid
 export const getUserOrders = async (req, res) => {
   try {
-    const { userId } = req.query; // ✅ Accept from query instead of body
-    const orders = await Order.find({
-      userId,
-      $or: [{ paymentType: "COD" }, { isPaid: true }]
-    }).populate("items.product address").sort({ createdAt: -1 });
+    const { userId } = req.query;
+
+    const orders = await Order.find({ userId })
+      .populate("items.product address") // Make sure populate works
+      .sort({ createdAt: -1 });
+
     res.json({ success: true, orders });
   } catch (error) {
     res.json({ success: false, message: error.message });
   }
 };
+
 
 // Place Order Stripe : /api/order/stripe
 export const placeOrderStripe = async (req, res)=>{
@@ -164,15 +167,16 @@ export const stripeWebhooks = async (request, response) => {
 }
 
 // Get All Orders (for seller) : /api/order/seller
-export const getAllOrders = async (req, res)=>{
-    try {
-        const orders = await Order.find({
-            $or: [{paymentType: "COD"}, {isPaid: true}]
-        }).populate("items.product address").sort({createdAt: -1});
-        res.json({ success: true, orders });
-    } catch (error) {
-        res.json({ success: false, message: error.message });
-    }
-}
+export const getAllOrders = async (req, res) => {
+  try {
+    const orders = await Order.find({})
+      .populate("items.product address userId")  // ✅ include buyer info
+      .sort({ createdAt: -1 });
+
+    res.json({ success: true, orders });
+  } catch (error) {
+    res.json({ success: false, message: error.message });
+  }
+};
 
 
