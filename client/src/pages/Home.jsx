@@ -1,5 +1,5 @@
 import React from 'react'
-import MainBanner from '../components/main_banner'
+import MainBanner from '../components/Main_banner'
 import Categories from '../components/Categories'
 import Best_seller from '../components/Best_seller'
 import BottomBanner from '../components/BottomBanner'
